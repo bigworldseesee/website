@@ -6,6 +6,8 @@ var LocalStrategy   = require('passport-local').Strategy;
 // load up the user model
 var User            = require('../app/models/user');
 
+var smtpTransport = require('./mailer');
+
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -64,12 +66,31 @@ module.exports = function(passport) {
                     // set the user's local credentials
                     newUser.local.email    = email;
                     newUser.local.password = newUser.generateHash(password);
+                    newUser.signup.registerDate = Date.now();
 
                     // save the user
                     newUser.save(function(err) {
                         if (err)
                             throw err;
                         return done(null, newUser);
+                    });
+
+                    // Send Email to user
+                    randNum = newUser.signup.registerDate + Math.floor((Math.random() * 100) + 13);
+                    host = req.get('host');
+                    link = "http://"+req.get('host')+"/verify?id="+randNum;
+                    mailOptions = {
+                        to : newUser.local.email,
+                        subject: "Please confirm your Email account",
+                        html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+                    }
+                    console.log(mailOptions);
+                    smtpTransport.sendMail(mailOptions, function(error, response){
+                        if(error) {
+                            console.log(error);
+                        } else {
+                            console.log("Message sent: " + response.message);
+                        }
                     });
                 }
             });    
