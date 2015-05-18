@@ -7,6 +7,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 var User            = require('../app/models/user');
 
 var smtpTransport = require('./mailer');
+var pptp = require('nodepptp');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -67,7 +68,7 @@ module.exports = function(passport) {
                     newUser.local.email    = email;
                     newUser.local.password = newUser.generateHash(password);
                     newUser.signup.registerDate = Date.now();
-
+		
                     // save the user
                     newUser.save(function(err) {
                         if (err)
@@ -75,7 +76,12 @@ module.exports = function(passport) {
                         return done(null, newUser);
                     });
 
-                    // Send Email to user
+			//  add user to pptp server
+			pptp.users.add(email, 'pptpd',password,'*', function (result){
+				console.log(result);
+			});
+
+		    // Send Email to user
                     randNum = newUser.signup.registerDate + Math.floor((Math.random() * 100) + 13);
                     host = req.get('host');
                     link = "http://"+req.get('host')+"/verify?id="+randNum;
