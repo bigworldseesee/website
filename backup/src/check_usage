@@ -15,7 +15,6 @@ while read loginInstance
 do
 	pppid=`echo $loginInstance | awk '{print $2;}'`
 	stat=`echo $loginInstance | awk '{print $9;}'`
-	echo $loginInstance
 	if [ "$stat" == "logged" ]
 	then
 		Rx=`ifconfig $pppid | grep "RX bytes" | awk '{print $2;}' | sed 's/.*://'`
@@ -45,10 +44,12 @@ do
 		Tx=0
 	fi
 
+	echo $loginInstance	Rx: ${Rx} bytes.	Tx: ${Tx} bytes.
+	
 	totalRx=$((${totalRx} + ${Rx}))	
 	totalTx=$((${totalTx} + ${Tx}))	
 	
 done < $filename
 
-echo Received:	${totalRx} bytes.	Sent:	${totalTx} bytes.
+echo Total: 	Received:	${totalRx} bytes.	Sent:	${totalTx} bytes.
 rm ${filename}
