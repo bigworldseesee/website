@@ -15,7 +15,7 @@ while read loginInstance
 do
 	pppid=`echo $loginInstance | awk '{print $2;}'`
 	stat=`echo $loginInstance | awk '{print $9;}'`
-#	echo $loginInstance
+	echo $loginInstance
 	if [ "$stat" == "logged" ]
 	then
 		Rx=`ifconfig $pppid | grep "RX bytes" | awk '{print $2;}' | sed 's/.*://'`
@@ -35,6 +35,16 @@ do
 		Tx=`tail -n +${linenum} $logname | grep $sessionid | grep Sent | head -n 1 | awk '{print $7}'`
 		Rx=`tail -n +${linenum} $logname | grep $sessionid | grep Sent | head -n 1 | awk '{print $10}'`
 	fi
+	if [ "$Rx" == "" ]
+	then
+		Rx=0
+	fi
+
+	if [ "$Tx" == "" ]
+	then
+		Tx=0
+	fi
+
 	totalRx=$((${totalRx} + ${Rx}))	
 	totalTx=$((${totalTx} + ${Tx}))	
 	
