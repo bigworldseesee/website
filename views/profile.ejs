@@ -24,46 +24,56 @@
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-10 col-sm-offset-1">
             <div class="well">
-		<h2>以下设置，仅需完成一次</h2>
-		<h3>
-			<span class="fa fa-user"></span>
-			<strong><%=user.local.email%></strong>
-		</h3>
-		<p>
-			<strong>Windows 7 设置。<br></strong>
-			第一步: 点开始菜单->搜索框内->输入VPN。<br>
-			第二部: 选择新建VPN链接<br>
-			第三部: 在地址栏(Internet address)输入95.215.45.247。目标名称(Destination name)：随便。下一步(Next)<br>
-			第四部: 在用户名(Username)中输入Email信息。在密码(Password)中输入注册使用的密码。<br>
-			第五部：连接(Connect)！！<br>
-			断开和再次连接<br>
-			第六部: 点击屏幕右下角的网络连接图标。选好VPN后，断开连接(Disconnect)或者连接(Connect).
-		</p>
-		<p>
-			<strong>iPhone/iPad设置。<br></strong>
-			第一步: 设置(Setting)->通用(General)->VPN->新添VPN配置(Add VPN Configuration)<br>
-			第二部: 选择PPTP.<br>
-			第三部: 描述(Description)：随便. 在服务器中(Server)输入95.215.45.247<br>
-			第四部: 在用户(Account)中输入Email信息。在密码(Password)中输入注册使用的密码。记得保存(Save)。 <br>
-			连接和断开<br>
-			第五部：确认选好的VPN已经打上勾。通过滑动屏幕上方的开关来连接或断开VPN<br>
-		</p>
-		<p>
-			<strong>苹果 OSX 设置。<br></strong>
-			第一步: 系统设置(System Preference)->网络(Network)->点+号新建服务<br>
-			第二部: 选择VPN->在VPN类型(VPN type)中选择PPTP。服务名称(Service Name)：随便。点击建立(Create)<br>
-			第三部: 在服务器地址(Server Address)输入95.215.45.247。<br>
-			第四部: 在用户名(Account Name)中输入Email信息。在验证设置中(Authentication Settings), 输入密码(Password)。<br>
-			第五部：在高级(Advanced)选项中，选择所以通讯用VPN连接(Send all traffic over VPN connection)。确认返回。<br>
-			第六部: 左下角选择在菜单栏显示VPN状态(Show VPN status in menu bar)。点击连接(Connect)<br>
-			断开和再次连接<br>
-			第七部: 点击菜单栏上的VPN图标，选择断开或连接。<br>
-		</p>
+        <h2>以下设置，仅需完成一次</h2>
+        <h3>
+            <span class="fa fa-user"></span>
+            <strong><%=user.local.email%></strong>
+            <p><br></p>
+        </h3>
+        <p>
+            <h4><strong>Windows 7 设置<br></strong></h4>
+            第一步: 开始菜单->搜索框内->输入VPN。<br>
+            第二步: 选择新建VPN链接。<br>
+            第三步: 在地址栏(Internet address)输入95.215.45.247。目标名称(Destination name)：随便。下一步(Next)。<br>
+            第四步: 在用户名(Username)中输入Email信息。在密码(Password)中输入注册使用的密码。<br>
+            第五步: 连接(Connect)。<br>
+            断开和再次连接<br>
+            第六步: 点击屏幕右下角的网络连接图标。选好VPN后，断开连接(Disconnect)或者连接(Connect)。<br>
+        </p>
+        <p>
+            <h4><strong>iPhone/iPad设置<br></strong></h4>
+            第一步: 设置(Setting)->通用(General)->VPN->新添VPN配置(Add VPN Configuration)。<br>
+            第二步: 选择PPTP。<br>
+            第三步: 描述(Description)：随便。在服务器中(Server)输入95.215.45.247。<br>
+            第四步: 在用户(Account)中输入Email信息。在密码(Password)中输入注册使用的密码。记得保存(Save)。<br>
+            连接和断开<br>
+            第五步: 确认选好的VPN已经打上勾。通过滑动屏幕上方的开关来连接或断开VPN。<br>
+        </p>
+        <p>
+            <h4><strong>安卓手机设置<br></strong></h4>
+            第一步: 设定(Setting)->更多网络(More networks)->VPN->基本VPN(Basic VPN)->点击“＋”。<br>
+            第二步: 名称(Name)：随便。类型(Type)：选择PPTP。<br>
+            第三步: 服务器地址(Server address)中输入95.215.45.247，然后点击“保存”。<br>
+            第四步: 点击新建立的VPN，用户名(Username)中输入Email信息，密码(Password)中输入注册使用的密码，勾选“保存账户信息”，点击“连接”。<br>
+            断开连接<br>
+            第五步: 在安卓通知栏内，点击建立的VPN(钥匙图标)，选择“断开连接”即可中止。<br>
+        </p>
+        <p>
+            <h4><strong>苹果 OSX 设置<br></strong></h4>
+            第一步: 系统设置(System Preference)->网络(Network)->点+号新建服务。<br>
+            第二步: 选择VPN->在VPN类型(VPN type)中选择PPTP。服务名称(Service Name)：随便。点击建立(Create)。<br>
+            第三步: 在服务器地址(Server Address)输入95.215.45.247。<br>
+            第四步: 在用户名(Account Name)中输入Email信息。在验证设置中(Authentication Settings)，输入密码(Password)。<br>
+            第五步: 在高级(Advanced)选项中，选择所以通讯用VPN连接(Send all traffic over VPN connection)。确认返回。<br>
+            第六步: 左下角选择在菜单栏显示VPN状态(Show VPN status in menu bar)。点击连接(Connect)。<br>
+            断开和再次连接<br>
+            第七步: 点击菜单栏上的VPN图标，选择断开或连接。<br>
+        </p>
 
-		<p>
-			什么，还有问题？<br>
-			那微信，email，或者电话来找我吧<br>
-		</p>
+        <p>
+            什么，还有问题？<br>
+            那微信，email，或者电话来找我吧<br>
+        </p>
 
 
 <!--
