@@ -50,6 +50,7 @@ do
 	totalTx=$((${totalTx} + ${Tx}))	
 	
 done < $filename
-
-echo Total: 	Received:	${totalRx} bytes.	Sent:	${totalTx} bytes.
+totalRxMB=$(awk "BEGIN {printf \"%.2f\",${totalRx}/1048576}")
+totalTxMB=$(awk "BEGIN {printf \"%.2f\",${totalTx}/1048576}")
+echo Total: 	Received:	${totalRxMB} MB.	Sent:	${totalTxMB} MB.
 rm ${filename}
