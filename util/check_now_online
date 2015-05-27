@@ -12,4 +12,4 @@ if [ ! -f ${LOGDIR}/hourly_user.txt ]; then
 fi
 
 echo "${DATE}	${TIME}		${hourly_user}" >> ${LOGDIR}/hourly_user.txt
-
+echo "${DATE}	${TIME}		${hourly_user}"

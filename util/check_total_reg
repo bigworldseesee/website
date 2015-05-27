@@ -12,4 +12,5 @@ if [ ! -f ${LOGDIR}/total_reg.txt ]; then
 fi
 
 echo "${DATE}	${TIME}		${total_reg}" >> ${LOGDIR}/total_reg.txt
+echo "${DATE}	${TIME}		${total_reg}"
 

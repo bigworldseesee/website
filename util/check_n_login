@@ -30,4 +30,5 @@ do
 done < /etc/ppp/chap-secrets
 
 echo "${DATE}	${TIME}		${total_login}" >> ${LOGDIR}/${LOGFILE}
+echo "${DATE}	${TIME}		${total_login}" 
 

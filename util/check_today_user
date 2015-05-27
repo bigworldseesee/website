@@ -14,3 +14,4 @@ fi
 today_login=`/usr/bin/last -w | /bin/grep ppp | /bin/grep "$TODAY" | /usr/bin/awk '{print $1}' | /usr/bin/sort | /usr/bin/uniq | /usr/bin/wc -l`
 
 echo "${DATE}	${TIME}		${today_login}" >> ${LOGDIR}/${LOGFILE}
+echo "${DATE}	${TIME}		${today_login}"
