@@ -1,7 +1,0 @@
-#!/bin/bash
-while read userLine
-do
-	user=`echo $userLine | awk '{print $1;}'`
-	echo $user
-	check_usage $user
-done < /etc/ppp/chap-secrets

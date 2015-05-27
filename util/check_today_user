@@ -1,0 +1,16 @@
+#!/bin/bash
+LOGDIR=~/log
+LOGFILE=today_login.txt
+DATE=`date +"%Y%m%d"`
+TIME=`date +"%H%M%S"`
+TODAY=`date +"%B %d"`
+if [ ! -d $LOGDIR ]; then
+	mkdir $LOGDIR
+fi
+if [ ! -f ${LOGDIR}/${LOGFILE} ]; then
+	echo "Date		Time		Total" > ${LOGDIR}/${LOGFILE}
+fi
+
+today_login=`/usr/bin/last -w | /bin/grep ppp | /bin/grep "$TODAY" | /usr/bin/awk '{print $1}' | /usr/bin/sort | /usr/bin/uniq | /usr/bin/wc -l`
+
+echo "${DATE}	${TIME}		${today_login}" >> ${LOGDIR}/${LOGFILE}

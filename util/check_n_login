@@ -1,0 +1,33 @@
+#!/bin/bash
+if [ "$#" -ne 1 ]
+then
+	numlogin=1
+else
+	numlogin=$1
+fi
+
+
+LOGDIR=~/log
+LOGFILE=${numlogin}_login.txt
+DATE=`date +"%Y%m%d"`
+TIME=`date +"%H%M%S"`
+if [ ! -d $LOGDIR ]; then
+	mkdir $LOGDIR
+fi
+if [ ! -f ${LOGDIR}/${LOGFILE} ]; then
+	echo "Date		Time		Total" > ${LOGDIR}/${LOGFILE}
+fi
+
+total_login=0
+while read userLine
+do
+	user=`/bin/echo $userLine | /usr/bin/awk '{print $1;}'`
+	num=`/usr/bin/last $user | /bin/grep ppp | /usr/bin/wc -l`
+	if [ "$num" -ge "$numlogin" ]
+	then
+		total_login=$((${total_login} + 1))	
+	fi
+done < /etc/ppp/chap-secrets
+
+echo "${DATE}	${TIME}		${total_login}" >> ${LOGDIR}/${LOGFILE}
+

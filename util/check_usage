@@ -1,56 +1,71 @@
 #!/bin/bash
+
+check_individual()
+{
+	timestamp=`date +"%H-%M-%S"`
+	filename="${1}+${timestamp}.tmp"
+	logname="/var/log/syslog"
+	last -w $1 | grep ppp | tac > $filename
+	totalRx=0
+	totalTx=0
+
+	while read loginInstance 
+	do
+		pppid=`echo $loginInstance | awk '{print $2;}'`
+		stat=`echo $loginInstance | awk '{print $9;}'`
+		if [ "$stat" == "logged" ]
+		then
+			Rx=`ifconfig $pppid | grep "RX bytes" | awk '{print $2;}' | sed 's/.*://'`
+			Tx=`ifconfig $pppid | grep "RX bytes" | awk '{print $6;}' | sed 's/.*://'`
+		else
+			month=`echo $loginInstance | awk '{print $5;}'`
+			day=`echo $loginInstance | awk '{print $6;}'`
+			time=`echo $loginInstance | awk '{print $7;}'`
+			sessionline=`grep -n $time $logname | grep "$month $day" | grep $pppid | head -n 2 | tail -n 1`
+			if [ "$sessionline" == "" ]
+			then
+				linenum=`grep -n $time $logname | grep "$month $day" | head -n 1 | awk -F: '{print $1;}'`
+				sessionline=`head -n $linenum $logname | grep -n $pppid | tail -n 1`
+			fi
+			linenum=`echo $sessionline | awk -F: '{print $1;}'`
+			sessionid=`echo $sessionline | awk '{print $5;}' | sed 's/.*\[\([^]]*\)\].*/\1/g'`
+			Tx=`tail -n +${linenum} $logname | grep $sessionid | grep Sent | head -n 1 | awk '{print $7}'`
+			Rx=`tail -n +${linenum} $logname | grep $sessionid | grep Sent | head -n 1 | awk '{print $10}'`
+		fi
+		if [ "$Rx" == "" ]
+		then
+			Rx=0
+		fi
+
+		if [ "$Tx" == "" ]
+		then
+			Tx=0
+		fi
+
+		if [ "$#" -eq 1 ]
+		then
+			echo $loginInstance	Rx: ${Rx} bytes.	Tx: ${Tx} bytes.
+		fi
+		totalRx=$((${totalRx} + ${Rx}))	
+		totalTx=$((${totalTx} + ${Tx}))	
+		
+	done < $filename
+	totalRxMB=$(awk "BEGIN {printf \"%.2f\",${totalRx}/1048576}")
+	totalTxMB=$(awk "BEGIN {printf \"%.2f\",${totalTx}/1048576}")
+	echo Total: 	Received:	${totalRxMB} MB.	Sent:	${totalTxMB} MB.
+	rm ${filename}
+}
+
+
 if [ "$#" -ne 1 ]
 then
-	echo "Need to provide a username, such as public"
-	exit 1
+	while read userLine
+	do
+        	user=`echo $userLine | awk '{print $1;}'`
+	        echo $user
+	        check_individual $user 0 #0 means don't display user details
+	done < /etc/ppp/chap-secrets
+else
+	check_individual $1
 fi
-timestamp=`date +"%H-%M-%S"`
-filename="${1}+${timestamp}.tmp"
-logname="/var/log/syslog"
-last -w $1 | grep -n ppp > $filename
-totalRx=0
-totalTx=0
-
-while read loginInstance 
-do
-	pppid=`echo $loginInstance | awk '{print $2;}'`
-	stat=`echo $loginInstance | awk '{print $9;}'`
-	if [ "$stat" == "logged" ]
-	then
-		Rx=`ifconfig $pppid | grep "RX bytes" | awk '{print $2;}' | sed 's/.*://'`
-		Tx=`ifconfig $pppid | grep "RX bytes" | awk '{print $6;}' | sed 's/.*://'`
-	else
-		month=`echo $loginInstance | awk '{print $5;}'`
-		day=`echo $loginInstance | awk '{print $6;}'`
-		time=`echo $loginInstance | awk '{print $7;}'`
-		sessionline=`grep -n $time $logname | grep "$month $day" | grep $pppid | head -n 2 | tail -n 1`
-		if [ "$sessionline" == "" ]
-		then
-			linenum=`grep -n $time $logname | grep "$month $day" | head -n 1 | awk -F: '{print $1;}'`
-			sessionline=`head -n $linenum $logname | grep -n $pppid | tail -n 1`
-		fi
-		linenum=`echo $sessionline | awk -F: '{print $1;}'`
-		sessionid=`echo $sessionline | awk '{print $5;}' | sed 's/.*\[\([^]]*\)\].*/\1/g'`
-		Tx=`tail -n +${linenum} $logname | grep $sessionid | grep Sent | head -n 1 | awk '{print $7}'`
-		Rx=`tail -n +${linenum} $logname | grep $sessionid | grep Sent | head -n 1 | awk '{print $10}'`
-	fi
-	if [ "$Rx" == "" ]
-	then
-		Rx=0
-	fi
-
-	if [ "$Tx" == "" ]
-	then
-		Tx=0
-	fi
-
-	echo $loginInstance	Rx: ${Rx} bytes.	Tx: ${Tx} bytes.
-	
-	totalRx=$((${totalRx} + ${Rx}))	
-	totalTx=$((${totalTx} + ${Tx}))	
-	
-done < $filename
-totalRxMB=$(awk "BEGIN {printf \"%.2f\",${totalRx}/1048576}")
-totalTxMB=$(awk "BEGIN {printf \"%.2f\",${totalTx}/1048576}")
-echo Total: 	Received:	${totalRxMB} MB.	Sent:	${totalTxMB} MB.
-rm ${filename}
+exit 0
