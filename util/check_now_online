@@ -2,14 +2,15 @@
 
 hourly_user=`/sbin/ifconfig | /bin/grep ppp | /usr/bin/wc -l`
 LOGDIR=~/log
+LOGFILE=hourly_user.log
 DATE=`date +"%Y%m%d"`
 TIME=`date +"%H%M%S"`
 if [ ! -d $LOGDIR ]; then
 	mkdir $LOGDIR
 fi
-if [ ! -f ${LOGDIR}/hourly_user.txt ]; then
-	echo "Date		Time		Total" > ${LOGDIR}/hourly_user.txt
+if [ ! -f ${LOGDIR}/${LOGFILE} ]; then
+	echo "Date		Time		Total" > ${LOGDIR}/${LOGFILE}
 fi
 
-echo "${DATE}	${TIME}		${hourly_user}" >> ${LOGDIR}/hourly_user.txt
+echo "${DATE}	${TIME}		${hourly_user}" >> ${LOGDIR}/${LOGFILE}
 echo "${DATE}	${TIME}		${hourly_user}"

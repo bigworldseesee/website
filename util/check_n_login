@@ -8,7 +8,7 @@ fi
 
 
 LOGDIR=~/log
-LOGFILE=${numlogin}_login.txt
+LOGFILE=${numlogin}_login.log
 DATE=`date +"%Y%m%d"`
 TIME=`date +"%H%M%S"`
 if [ ! -d $LOGDIR ]; then

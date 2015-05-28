@@ -1,0 +1,17 @@
+#!/bin/bash
+LOGDIR=~/log
+LOGFILE=monthly_login.log
+DATE=`date +"%Y%m%d"`
+TIME=`date +"%H%M%S"`
+MONTH=`date +"%B"`
+if [ ! -d $LOGDIR ]; then
+	mkdir $LOGDIR
+fi
+if [ ! -f ${LOGDIR}/${LOGFILE} ]; then
+	echo "Date		Time		Total" > ${LOGDIR}/${LOGFILE}
+fi
+
+monthly_login=`/usr/bin/last -w | /bin/grep ppp | /bin/grep "$MONTH" | /usr/bin/awk '{print $1}' | /usr/bin/sort | /usr/bin/uniq | /usr/bin/wc -l`
+
+echo "${DATE}	${TIME}		${monthly_login}" >> ${LOGDIR}/${LOGFILE}
+echo "${DATE}	${TIME}		${monthly_login}"

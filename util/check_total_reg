@@ -2,15 +2,16 @@
 
 total_reg=`/bin/cat /etc/ppp/chap-secrets | /usr/bin/wc -l`
 LOGDIR=~/log
+LOGFILE=total_reg.log
 DATE=`date +"%Y%m%d"`
 TIME=`date +"%H%M%S"`
 if [ ! -d $LOGDIR ]; then
 	mkdir $LOGDIR
 fi
-if [ ! -f ${LOGDIR}/total_reg.txt ]; then
-	echo "Date		Time		Total" > ${LOGDIR}/total_reg.txt
+if [ ! -f ${LOGDIR}/${LOGFILE} ]; then
+	echo "Date		Time		Total" > ${LOGDIR}/${LOGFILE}
 fi
 
-echo "${DATE}	${TIME}		${total_reg}" >> ${LOGDIR}/total_reg.txt
+echo "${DATE}	${TIME}		${total_reg}" >> ${LOGDIR}/${LOGFILE}
 echo "${DATE}	${TIME}		${total_reg}"
 
