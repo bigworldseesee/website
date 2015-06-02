@@ -3,7 +3,7 @@ LOGDIR=~/log
 LOGFILE=today_login.log
 DATE=`date +"%Y%m%d"`
 TIME=`date +"%H%M%S"`
-TODAY=`date +"%B %d"`
+TODAY=`date +"%b %e"`
 if [ ! -d $LOGDIR ]; then
 	mkdir $LOGDIR
 fi

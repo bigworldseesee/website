@@ -3,7 +3,7 @@
 check_individual()
 {
 	timestamp=`date +"%H-%M-%S"`
-	filename="${1}+${timestamp}.tmp"
+	filename=/tmp/"${1}+${timestamp}.tmp"
 	logname="/var/log/syslog"
 	last -w $1 | grep ppp | tac > $filename
 	totalRx=0
