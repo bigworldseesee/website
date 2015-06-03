@@ -21,10 +21,10 @@ check_individual()
 			month=`echo $loginInstance | awk '{print $5;}'`
 			day=`echo $loginInstance | awk '{print $6;}'`
 			time=`echo $loginInstance | awk '{print $7;}'`
-			sessionline=`grep -n $time $logname | grep "$month $day" | grep $pppid | head -n 2 | tail -n 1`
+			sessionline=`grep -n $time $logname | grep "$month" | grep "$day" | grep $pppid | head -n 2 | tail -n 1`
 			if [ "$sessionline" == "" ]
 			then
-				linenum=`grep -n $time $logname | grep "$month $day" | head -n 1 | awk -F: '{print $1;}'`
+				linenum=`grep -n $time $logname | grep "$month" | grep "$day" | head -n 1 | awk -F: '{print $1;}'`
 				sessionline=`head -n $linenum $logname | grep -n $pppid | tail -n 1`
 			fi
 			linenum=`echo $sessionline | awk -F: '{print $1;}'`
