@@ -3,7 +3,7 @@ LOGDIR=~/log
 LOGFILE=monthly_login.log
 DATE=`date +"%Y%m%d"`
 TIME=`date +"%H%M%S"`
-MONTH=`date +"%B"`
+MONTH=`date +"%b"`
 if [ ! -d $LOGDIR ]; then
 	mkdir $LOGDIR
 fi
