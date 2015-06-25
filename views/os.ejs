@@ -1,0 +1,26 @@
+<!-- views/windows.ejs -->
+<!doctype html>
+<html>
+<head>
+    <% include ./partials/head %>
+    <title><%= osInfo.name %></title>
+</head>
+<body>
+<h3>Welcome to <%= osInfo.name %></h3>
+<br>
+<!-- dynamic include a variable is not supported yet -->
+<!--% include osInfo.template %-->
+
+<!-- have to use the following cumbersome trick -->
+<% if(osInfo.id === 1) { %>
+<% include ./partials/WindowsManualSetup %>
+<% }else if(osInfo.id === 2) { %>
+<% include ./partials/AndroidManualSetup %>
+<% }else if(osInfo.id === 3) { %>
+<% include ./partials/iOSManualSetup %>
+<% }else if(osInfo.id === 4) { %>
+<% include ./partials/OSXManualSetup %>
+<% } %>
+
+</body>
+</html>

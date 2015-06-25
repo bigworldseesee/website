@@ -1,0 +1,12 @@
+img.center-image {
+	vertical-align : bottom;
+	width : 180px;
+	height : 180px;
+}
+
+div.row-4-cell {
+	float : left;
+	width : 25%;
+	border : 5px ridge #98bf21;
+	padding : 2;
+}

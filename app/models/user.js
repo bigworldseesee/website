@@ -7,9 +7,15 @@ var bcrypt   = require('bcrypt-nodejs');
 var userSchema = mongoose.Schema({
 
     signup          : {
-        registerDate: Number,
-        confirmDate : Number,
+        registerDate: Date,
+        confirmDate : Date,
     },
+    attributes	    : {
+//	group	: [String],
+//	OS	: [String],
+        groupId : [Number],
+	OSId    : [Number]
+    },		
 
     local            : {
         email        : String,

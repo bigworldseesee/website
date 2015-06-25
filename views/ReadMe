@@ -1,0 +1,4 @@
+* working with ejs find the following issues:
+ 1. dynamically include a path stored in variable is not supported yet (open issue on https://github.com/tj/ejs/pull/156)
+ 2. Filter is not working for some reason -- get compiling error. Although it is said to work on their documentation (https://github.com/tj/ejs)
+ 3. No easy/good way for commenting ejs code

@@ -1,0 +1,39 @@
+<!-- views/admin.ejs -->
+<!-- use OsMetadata stored in db to populate page -->
+<!doctype html>
+<html>
+<head>
+    <title>Profile</title>
+    <% include ./partials/head %>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+	<h1>二期测试中</h1>
+	<h1><span class="fa fa-anchor"></span> 请选择交通工具 (客户端下载) </h1>
+	<a href="/logout" class="btn btn-default btn-sm">不玩了</a>
+    </div>
+
+    <div class="row text-center" >
+        <h3>
+            <span class="fa fa-user"></span>
+	    <strong><%=user.local.email%></strong>
+	    <p><br></p>
+        </h3>
+	
+        <% for(var i=0; i<osInfos.length; i++) {%>
+	    <div class="col-sm-3 text-center" >
+		<a class="a-os-link" href="<%=osInfos[i].webPath%>" rel="prev" >
+		    <img class="center-image" src="<%=osInfos[i].iconLocation%>" />
+		    <p><font size="5px"><%= osInfos[i].name %><span class="glyphicon glyphicon-download-alt"></span></p>
+		</a>
+	    </div>
+	<% } %>
+    </div>
+</div>
+
+</body>
+</html>

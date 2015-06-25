@@ -1,4 +1,8 @@
 // app/routes.js
+var User = require ('../app/models/user');
+var OsMetadata = require ('../app/models/os_metadata');
+var UserGroupMetadata = require('../app/models/user_group_metadata');
+
 module.exports = function(app, passport) {
 
     // =====================================
@@ -49,17 +53,91 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
-        });
+	var groupId = parseInt("0x"+req.user.id.slice(-1)) % 2; 
+//TODO: Should validate groupId with UserGroupMetadata before update
+	User.findOneAndUpdate(
+	    {"local.email" : req.user.local.email},
+	    {$addToSet: {"attributes.groupId" : groupId  } },
+	    function(err,doc){
+		if (err) {
+	  	    console.log(err);
+		    return;
+		}
+	     }
+	);
+
+        OsMetadata.find({}, function(err, osInfos){
+	    if(err)
+	    {
+		console.log(err);
+		throw err;
+	    }
+	//TODO: should use the same template dynamically fill content
+	//      based on groupId
+            if (groupId == 0)  
+	    {
+	        res.render('profile.ejs', {
+            	    user : req.user // get user out of session and pass to template
+                });
+	    }
+	    else
+	    {
+	        res.render('profile2_1.ejs', {
+            	    user : req.user, // get user out of session and pass to template
+		    osInfos : osInfos
+	        });
+	    }
+	});
     });
 
     // =====================================
     // LOGOUT ==============================
     // =====================================
-    app.get('/logout', function(req, res) {
+    app.get('/logout', isLoggedIn, function(req, res) {
         req.logout();
         res.redirect('/');
+    });
+	
+
+    // =====================================
+    // Choose OS ==============================
+    // =====================================
+
+    app.get('/download/client/:ostype', isLoggedIn, function(req, res) {
+//	User.findOne({'local.email': req.user.local.email},function(err,user) {
+//		if (err)
+//		{	console.log(err);
+//			return done(err);}
+//		console.log(user);
+//		if (user)
+//		{user.attributes.OS.addToSet("Windows");
+//		user.save();}
+//	});
+        OsMetadata.findOne({'name' : req.params.ostype}, function(err, os){
+            if(err)
+	    {
+		console.log(err);
+	        throw err;
+	    }
+            if(os)
+            {
+	 	User.findOneAndUpdate({'local.email' : req.user.local.email},
+		    {$addToSet: {'attributes.OSId' : os.id}}, 
+		    function(err,user){
+			if(err)
+			{
+			    console.log(err);
+			    throw err;
+			}
+		    }
+		);
+		res.render('os.ejs', { osInfo : os});
+            }
+            else
+            {
+		res.send('Failed to recognize OS: ' + req.params.ostype);
+	    }
+	});
     });
 };
 
@@ -73,3 +151,4 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
+
