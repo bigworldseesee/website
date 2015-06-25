@@ -1,0 +1,79 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Profile</title>
+    <% include ./partials/head %>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1>一期测试中</h1>
+        <h1><span class="fa fa-anchor"></span> 七步之内，能做什么？</h1>
+        <a href="/logout" class="btn btn-default btn-sm">不玩了</a>
+    </div>
+
+    <div class="row" ng-app="AccordionOS" ng-controller="AccordionCtrl">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-10 col-sm-offset-1">
+        <div class="well">
+            <h2>以下设置，仅需完成一次</h2>
+            <h3>
+                <span class="fa fa-user"></span>
+                <strong><%=user.local.email%></strong>
+                <p><br></p>
+            </h3>
+	
+	    <accordion close-others="OneAtATime">	
+	        <% for(var i = 0; i < osInfos.length; ++i) { %>
+	        <accordion-group is-open="group[<%= i %>].open">
+		    <accordion-heading>
+		    <strong><%= osInfos[i].name %></strong><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': group[<%=i%>].open, 'glyphicon-chevron-right': !group[<%=i%>].open}"></i>
+		    </accordion-heading>
+		    <% if(osInfos[i].id === 1) { %>
+		    <% include ./partials/WindowsManualSetup %>
+		    <% } else if(osInfos[i].id === 2) { %>
+		    <% include ./partials/AndroidManualSetup %>
+		    <% } else if(osInfos[i].id === 3) { %>
+		    <% include ./partials/iOSManualSetup %>
+		    <% } else if(osInfos[i].id === 4) { %>
+		    <% include ./partials/OSXManualSetup %>
+		    <% } %>
+	        </accordion-group>
+	        <% } %>
+	    </accordion>
+            <p>
+                什么，还有问题？<br>
+                那微信，email，或者电话来找我吧<br>
+            </p>
+
+
+<!--
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                    <p>
+                        <strong>id</strong>: <%= user._id %><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>password</strong>: <%= user.local.password %>
+                    </p>
+-->
+        </div>
+	</div>
+    </div>
+
+</div>
+<script>
+    var app = angular.module('AccordionOS', ['ui.bootstrap']);
+    app.controller('AccordionCtrl', function ($scope) {
+	$scope.oneAtATime = true;
+	$scope.$watch('status.open', function(isOpen){
+	    if(isOpen){
+		console.log('open');
+	    }
+	});
+    });
+</script>
+</body>
+</html>

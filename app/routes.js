@@ -76,8 +76,9 @@ module.exports = function(app, passport) {
 	//      based on groupId
             if (groupId == 0)  
 	    {
-	        res.render('profile.ejs', {
-            	    user : req.user // get user out of session and pass to template
+	        res.render('profile1_1.ejs', {
+            	    user : req.user, // get user out of session and pass to template
+		    osInfos : osInfos
                 });
 	    }
 	    else
