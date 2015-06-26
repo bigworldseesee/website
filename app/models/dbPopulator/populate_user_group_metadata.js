@@ -6,6 +6,8 @@ var conn = mongoose.connect(configDB.url, function(err){
     if(err) throw err;
     console.log('connecgted ' + configDB.url);
 
+var upload = function()
+{
     var count = 0;
     var gp = new UserGroupMetadata();
     gp.id = 0;
@@ -36,5 +38,15 @@ var conn = mongoose.connect(configDB.url, function(err){
 	    });
         }
     });
+}
 
+    UserGroupMetadata.remove(function(err){
+	if(err)
+	{
+	    console.log(err);
+	    mongoose.disconnect();
+	    throw err;
+	}
+	upload();
+    });
 });

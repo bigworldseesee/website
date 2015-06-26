@@ -5,7 +5,8 @@ var osMetadata = require('../os_metadata');
 mongoose.connect(configDB.url, function(err){
     if(err) throw err;
     console.log('connecgted ' + configDB.url);
-    
+
+var upload = function(){
     var count = 0;
     var os = new osMetadata();
     os.id = 1;
@@ -77,5 +78,17 @@ mongoose.connect(configDB.url, function(err){
         {
             mongoose.disconnect();
         }
+    });
+}
+
+    osMetadata.remove(function(err){
+	if(err)
+	{
+	   console.log(err);
+	   mongoose.disconnect();
+	   throw err;
+	}
+	console.log("Cleared old osmetadatas table");
+	upload();
     });
 });

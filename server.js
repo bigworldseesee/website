@@ -28,7 +28,7 @@ app.use(cookieParser()); // read cookies (needed for auth)
 // deprecated app.use(bodyParser()); // get information from html forms
 app.use(bodyParser.urlencoded({
     extended : true
-})); // get information from html forms
+})); 
 app.use(bodyParser.json()); // get information from html forms
 
 // put static before session as suggested by https://www.airpair.com/express/posts/expressjs-and-passportjs-sessions-deep-dive

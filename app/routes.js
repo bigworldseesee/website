@@ -76,14 +76,14 @@ module.exports = function(app, passport) {
 	//      based on groupId
             if (groupId == 0)  
 	    {
-	        res.render('profile1_1.ejs', {
+	        res.render('profileA.ejs', {
             	    user : req.user, // get user out of session and pass to template
-		    osInfos : osInfos
+		    osInfos : osInfos // OS info to populate web page
                 });
 	    }
 	    else
 	    {
-	        res.render('profile2_1.ejs', {
+	        res.render('profileB.ejs', {
             	    user : req.user, // get user out of session and pass to template
 		    osInfos : osInfos
 	        });
@@ -105,15 +105,7 @@ module.exports = function(app, passport) {
     // =====================================
 
     app.get('/download/client/:ostype', isLoggedIn, function(req, res) {
-//	User.findOne({'local.email': req.user.local.email},function(err,user) {
-//		if (err)
-//		{	console.log(err);
-//			return done(err);}
-//		console.log(user);
-//		if (user)
-//		{user.attributes.OS.addToSet("Windows");
-//		user.save();}
-//	});
+	// search db for the OS. Render the correct page based on OS info
         OsMetadata.findOne({'name' : req.params.ostype}, function(err, os){
             if(err)
 	    {
