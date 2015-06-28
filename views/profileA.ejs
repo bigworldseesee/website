@@ -6,7 +6,7 @@
     <% include ./partials/head %>
 </head>
 <body>
-<div class="container">
+<div class="container" ng-app="AccordionOS">
 
     <div class="page-header text-center">
         <h1>一期测试中</h1>
@@ -14,7 +14,7 @@
         <a href="/logout" class="btn btn-default btn-sm">不玩了</a>
     </div>
 
-    <div class="row" ng-app="AccordionOS" ng-controller="AccordionCtrl">
+    <div class="row" ng-controller="AccordionCtrl">
 
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-10 col-sm-offset-1">
@@ -22,27 +22,20 @@
             <h2>以下设置，仅需完成一次</h2>
             <h3>
                 <span class="fa fa-user"></span>
-                <strong><%=user.local.email%></strong>
+                <strong>{{user.local.email}}</strong>
                 <p><br></p>
             </h3>
 	
 	    <accordion close-others="oneAtATime">	
-	        <% for(var i = 0; i < osInfos.length; ++i) { %>
-	        <accordion-group is-open="group[<%= i %>].open">
-		    <accordion-heading>
-		    <strong><%= osInfos[i].name %></strong><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': group[<%=i%>].open, 'glyphicon-chevron-right': !group[<%=i%>].open}"></i>
+	        <accordion-group ng-repeat="osInfo in osInfos" is-open="$parent.group[$index].open">
+		    <accordion-heading >
+            <div style="display: block; margin: 0px" ng-click="osSelected($index)">
+		    <strong>{{osInfo.name}}</strong>
+            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': group[$index].open, 'glyphicon-chevron-right': !(group[$index].open)}"></i>
+            </div>
 		    </accordion-heading>
-		    <% if(osInfos[i].id === 1) { %>
-		    <% include ./partials/WindowsManualSetup %>
-		    <% } else if(osInfos[i].id === 2) { %>
-		    <% include ./partials/AndroidManualSetup %>
-		    <% } else if(osInfos[i].id === 3) { %>
-		    <% include ./partials/iOSManualSetup %>
-		    <% } else if(osInfos[i].id === 4) { %>
-		    <% include ./partials/OSXManualSetup %>
-		    <% } %>
+            <div ng-include src="osInfo.template"></div>
 	        </accordion-group>
-	        <% } %>
 	    </accordion>
             <p>
                 什么，还有问题？<br>
@@ -56,13 +49,40 @@
 </div>
 <script>
     var app = angular.module('AccordionOS', ['ui.bootstrap']);
-    app.controller('AccordionCtrl', function ($scope) {
-	$scope.oneAtATime = true;
-	$scope.$watch('status.open', function(isOpen){
-	    if(isOpen){
-		console.log('open');
-	    }
-	});
+    app.controller('AccordionCtrl', function ($scope, $http) {
+	    $scope.oneAtATime = true;
+        $scope.user = JSON.parse('<%- user %>');
+        $scope.osInfos = JSON.parse('<%- osInfos %>');
+
+        $scope.osHaveSent = [];
+        if($scope.user.hasOwnProperty('attributes') && $scope.user.attributes.hasOwnProperty('OSId'))
+        {
+            var userOs = $scope.user.attributes.OSId;
+            for(var i = 0; i < userOs.length; ++i)
+            { 
+                $scope.osHaveSent[userOs[i]] = true;
+            }
+        }
+        console.log($scope.osHaveSent);
+        $scope.group = [];
+        var osInfoLength = $scope.osInfos.length;
+        for(var i = 0; i < osInfoLength; ++i)
+        {
+            $scope.group[i] = { open : false, osId : $scope.osInfos[i].id};
+        }
+
+        $scope.osSelected = function(id)
+        {
+            var activeOsList = [];
+            var item = $scope.group[id];
+            if(!(item.open) && $scope.osHaveSent[item.osId] != true)
+            {
+                console.log(" I am recording OS " + item.osId);
+                activeOsList.push(item.osId);
+                $http.post('/manual-os', {activeOsList : activeOsList});
+                $scope.osHaveSent[item.osId] = true;
+            }
+        }
     });
 </script>
 </body>

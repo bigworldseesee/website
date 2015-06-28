@@ -1,25 +1,21 @@
-<!-- views/windows.ejs -->
+<!-- views/os.ejs -->
 <!doctype html>
-<html>
+<html ng-app="ClientDownload" ng-controller="CDCtrl">
 <head>
     <% include ./partials/head %>
-    <title><%= osInfo.name %></title>
+    <title>{{osInfo.name}}</title>
 </head>
 <body>
-<h3>Welcome to <%= osInfo.name %></h3>
+<h3>Welcome to {{osInfo.name}}</h3>
 <br>
-<!-- dynamic include a variable is not supported yet -->
-<!--% include osInfo.template %-->
 
-<% if(osInfo.id === 1) { %>
-<% include ./partials/WindowsManualSetup %>
-<% }else if(osInfo.id === 2) { %>
-<% include ./partials/AndroidManualSetup %>
-<% }else if(osInfo.id === 3) { %>
-<% include ./partials/iOSManualSetup %>
-<% }else if(osInfo.id === 4) { %>
-<% include ./partials/OSXManualSetup %>
-<% } %>
+<div ng-include src="'/'+osInfo.template" ></div>
 
+<script>
+var app = angular.module('ClientDownload', []);
+app.controller('CDCtrl', function($scope){
+    $scope.osInfo = JSON.parse('<%- osInfo %>');
+});
+</script>
 </body>
 </html>

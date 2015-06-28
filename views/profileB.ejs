@@ -20,11 +20,11 @@
     <div class="row text-center" >
         <h3>
             <span class="fa fa-user"></span>
-	    <strong><%=user.local.email%></strong>
+	    <strong><%-JSON.parse(user).local.email%></strong>
 	    <p><br></p>
         </h3>
 	
-        <% for(var i=0; i<osInfos.length; i++) {%>
+        <% for(var i=0, osInfos=JSON.parse(osInfos); i<osInfos.length; i++) {%>
 	    <div class="col-sm-3 text-center" >
 		<a class="a-os-link" href="<%=osInfos[i].webPath%>" rel="prev" >
 		    <img class="center-image" src="<%=osInfos[i].iconLocation%>" />

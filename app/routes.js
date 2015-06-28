@@ -74,18 +74,18 @@ module.exports = function(app, passport) {
 	    }
 	//TODO: should use the same template dynamically fill content
 	//      based on groupId
-            if (groupId == 0)  
+        if (groupId == 0)  
 	    {
 	        res.render('profileA.ejs', {
-            	    user : req.user, // get user out of session and pass to template
-		    osInfos : osInfos // OS info to populate web page
+          	    user : JSON.stringify(req.user), // get user out of session and pass to template
+		        osInfos : JSON.stringify(osInfos) // OS info to populate web page
                 });
 	    }
 	    else
 	    {
 	        res.render('profileB.ejs', {
-            	    user : req.user, // get user out of session and pass to template
-		    osInfos : osInfos
+            	    user : JSON.stringify(req.user), // get user out of session and pass to template
+		    osInfos : JSON.stringify(osInfos)
 	        });
 	    }
 	});
@@ -124,13 +124,35 @@ module.exports = function(app, passport) {
 			}
 		    }
 		);
-		res.render('os.ejs', { osInfo : os});
+		res.render('os.ejs', { osInfo : JSON.stringify(os)});
             }
             else
             {
 		res.send('Failed to recognize OS: ' + req.params.ostype);
 	    }
 	});
+    });
+
+
+    app.post('/manual-os', isLoggedIn, function(req, res){
+        if(req.body.activeOsList.length > 0)
+        {
+        User.findOneAndUpdate({'local.email' : req.user.local.email},
+            {$addToSet: {'attributes.OSId' : { $each: req.body.activeOsList}}},
+            function(err,user){
+            if(err)
+            {
+                console.log(err);
+                throw err;
+            }
+        res.end();
+            }
+        ); 
+        }
+        else
+    {
+        res.end();
+    }
     });
 };
 
