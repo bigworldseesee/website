@@ -3,8 +3,22 @@
 // set up ======================================================================
 // get all the tools we need
 var express  = require('express');
+var forceSSL = require('express-force-ssl');
+var fs = require ('fs');
+var http = require('http');
+var https = require('https');
+var ssl_options = {
+    key: fs.readFileSync('./keys/server.key'),
+    cert: fs.readFileSync('./keys/server.crt'),
+    ca: fs.readFileSync('./keys/server.crt')
+};
+
 var app      = express();
+var server = http.createServer(app);
+var secureServer = https.createServer(ssl_options, app);
+
 var port     = process.env.PORT || 3000;
+var securePort = 8443;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
@@ -35,6 +49,9 @@ app.use(bodyParser.json()); // get information from html forms
 app.use(express.static(__dirname + "/public"));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
+// force SSL
+app.use(forceSSL);
+
 // required for passport
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch',
 		  resave : true,
@@ -47,5 +64,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
-app.listen(port);
+//app.listen(port); 
+secureServer.listen(securePort);
+server.listen(port);  
 console.log('The magic happens on port ' + port);
