@@ -7,13 +7,14 @@ mongoose.connect(configDB.url, function(err){
     console.log('connecgted ' + configDB.url);
 
 var upload = function(){
+    var url = 'http://bigworldseesee.com';
     var count = 0;
     var os = new osMetadata();
     os.id = 1;
     os.name = 'Windows';
     os.version = '7+';
     os.description = '';
-    os.webPath = 'http://128.199.133.225:3000/download/client/Windows';
+    os.webPath = url + '/download/client/Windows';
     os.iconLocation = 'img/windows.png';
     os.template = './partials/WindowsManualSetup.ejs';
 
@@ -31,7 +32,7 @@ var upload = function(){
     os.name = 'Android';
     os.version = '4.0+';
     os.description = '';
-    os.webPath = 'http://128.199.133.225:3000/download/client/Android';
+    os.webPath =  url + '/download/client/Android';
     os.iconLocation = 'img/android.png';
     os.template = './partials/AndroidManualSetup.ejs';
 
@@ -49,7 +50,7 @@ var upload = function(){
     os.name = 'iOS';
     os.version = '6+';
     os.description = '';
-    os.webPath = 'http://128.199.133.225:3000/download/client/iOS';
+    os.webPath = url + '/download/client/iOS';
     os.iconLocation = 'img/ios.png';
     os.template = './partials/iOSManualSetup.ejs';
 
@@ -67,7 +68,7 @@ var upload = function(){
     os.name = 'OSX';
     os.version = '10';
     os.description = '';
-    os.webPath = 'http://128.199.133.225:3000/download/client/OSX';
+    os.webPath = url + '/download/client/OSX';
     os.iconLocation = 'img/osx.png';
     os.template = './partials/OSXManualSetup.ejs';
 
