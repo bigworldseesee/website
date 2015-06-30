@@ -9,13 +9,14 @@ var conn = mongoose.connect(configDB.url, function(err){
 var upload = function()
 {
     var count = 0;
+
     var gp = new UserGroupMetadata();
     gp.id = 0;
-    gp.name = 'auto_manual_setup_experiment_Manual';
+    gp.name = 'reserved';
     gp.save(function(err){
         if(err) console.log(err);
         ++count;
-        if(count == 2)
+        if(count == 3)
         {
             mongoose.disconnect(function(err){
 		if(err) throw err;
@@ -26,11 +27,26 @@ var upload = function()
 
     gp = new UserGroupMetadata();
     gp.id = 1;
+    gp.name = 'auto_manual_setup_experiment_Manual';
+    gp.save(function(err){
+        if(err) console.log(err);
+        ++count;
+        if(count == 3)
+        {
+            mongoose.disconnect(function(err){
+		if(err) throw err;
+		console.log('disconnected');
+            });
+        }
+    });
+
+    gp = new UserGroupMetadata();
+    gp.id = 2;
     gp.name = 'auto_manual_setup_experiment_Auto';
     gp.save(function(err){
         if(err) console.log(err);
         ++count;
-        if(count == 2)
+        if(count == 3)
         {
             mongoose.disconnect(function(err){
 		if(err) throw err;

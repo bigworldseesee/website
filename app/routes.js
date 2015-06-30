@@ -53,19 +53,33 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
-	var groupId = parseInt("0x"+req.user.id.slice(-1)) % 2; 
-//TODO: Should validate groupId with UserGroupMetadata before update
-	User.findOneAndUpdate(
-	    {"local.email" : req.user.local.email},
-	    {$addToSet: {"attributes.groupId" : groupId  } },
-	    function(err,doc){
-		if (err) {
-	  	    console.log(err);
-		    return;
-		}
-	     }
-	);
-
+	var existGroupId = req.user.attributes.groupId;
+	console.log(existGroupId);
+	var groupId = 0;
+	if(existGroupId)
+	{
+	    if(existGroupId.length === 0)
+	    {
+	        groupId = parseInt("0x"+req.user.id.slice(-1)) % 2 + 1;
+		//TODO: Should validate groupId with UserGroupMetadata before update
+	        User.findOneAndUpdate(
+	        {"local.email" : req.user.local.email},
+	        {$addToSet: {"attributes.groupId" : groupId } },
+	        function(err,doc){
+		    if (err) {
+	  	        console.log(err);
+		        return;
+		    }
+	         }
+	        );
+	    }
+	    else
+	    {
+		if(existGroupId.indexOf(1) != -1) groupId = 1;
+		else if(existGroupId.indexOf(2) != -1) groupId = 2;
+	    }
+	}
+	
         OsMetadata.find({}, function(err, osInfos){
 	    if(err)
 	    {
@@ -74,7 +88,7 @@ module.exports = function(app, passport) {
 	    }
 	//TODO: should use the same template dynamically fill content
 	//      based on groupId
-        if (groupId == 0)  
+        if (groupId == 0 || groupId == 1)  
 	    {
 	        res.render('profileA.ejs', {
           	    user : JSON.stringify(req.user), // get user out of session and pass to template
