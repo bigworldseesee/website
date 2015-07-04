@@ -7,7 +7,7 @@ mongoose.connect(configDB.url, function(err){
     console.log('connecgted ' + configDB.url);
 
 var upload = function(){
-    var url = 'http://bigworldseesee.com';
+    var url = '';
     var count = 0;
     var os = new osMetadata();
     os.id = 1;
@@ -20,12 +20,6 @@ var upload = function(){
 
     os.save(function(err){
         if(err) console.log(err);
-        ++count;
-        if(count == 4)
-        {
-            mongoose.disconnect();
-        }
-    });
     
     os = new osMetadata();
     os.id = 2;
@@ -38,12 +32,6 @@ var upload = function(){
 
     os.save(function(err){
         if(err) console.log(err);
-        ++count;
-        if(count == 4)
-        {
-            mongoose.disconnect();
-        }
-    });
     
     os = new osMetadata();
     os.id = 3;
@@ -56,14 +44,8 @@ var upload = function(){
 
     os.save(function(err){
         if(err) console.log(err);
-        ++count;
-        if(count == 4)
-        {
-            mongoose.disconnect();
-        }
-    });
-    
-    os = new osMetadata();
+
+    os = osMetadata();
     os.id = 4;
     os.name = 'OSX';
     os.version = '10';
@@ -74,11 +56,8 @@ var upload = function(){
 
     os.save(function(err){
         if(err) console.log(err);
-        ++count;
-        if(count == 4)
-        {
             mongoose.disconnect();
-        }
+})})})
     });
 }
 

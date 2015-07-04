@@ -90,8 +90,9 @@ module.exports = function(app, passport) {
 	//      based on groupId
         if (groupId == 0 || groupId == 1)  
 	    {
-	        res.render('profileA.ejs', {
-          	    user : JSON.stringify(req.user), // get user out of session and pass to template
+	        res.render('profile.ejs', {
+          	    //user : JSON.stringify(req.user), // get user out of session and pass to template
+		        user : req.user,
 		        osInfos : JSON.stringify(osInfos) // OS info to populate web page
                 });
 	    }
