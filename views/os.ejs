@@ -3,24 +3,22 @@
 <html ng-app="ClientDownload" ng-controller="CDCtrl">
 <head>
     <% include ./partials/head %>
-    <title><%-JSON.parse(osInfo).name%></title>
+    <title>{{osInfo.name}}</title>
 </head>
 <body>
-<h3><%-JSON.parse(osInfo).name%> 客户端下载</h3>
+<h3>{{osInfo.name}} 客户端下载</h3>
 <br>
 
 <div>非常抱歉，客户端还没有准备好，请暂时使用以下手动方式进行连接...<br>
 我们会尽快开发，方便您的使用。暂时的不便，敬请谅解!<br><br></div>
 
-<% if (JSON.parse(osInfo).id === 1 ){ %>
-<% include ./partials/WindowsManualSetup.ejs %>
-<% } else if(JSON.parse(osInfo).id === 2 ) { %>
-<% include ./partials/AndroidManualSetup.ejs %>
-<% } else if(JSON.parse(osInfo).id === 2 ) { %>
-<% include ./partials/iOSManualSetup.ejs %>
-<% } else if(JSON.parse(osInfo).id === 2 ) { %>
-<% include ./partials/OSXManualSetup.ejs %>
-<% } %>
+<div ng-include src="'/'+osInfo.template" ></div>
 
+<script>
+var app = angular.module('ClientDownload', []);
+app.controller('CDCtrl', function($scope){
+    $scope.osInfo = JSON.parse('<%- osInfo %>');
+});
+</script>
 </body>
 </html>
