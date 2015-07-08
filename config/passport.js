@@ -53,8 +53,11 @@ module.exports = function(passport) {
             User.findOne({ 'local.email' :  email }, function(err, user) {
                 // if there are any errors, return the error
                 if (err)
-                    return done(err);
-
+                {
+                    console.log(err);
+                    throw err;
+                //    return done(err);
+                }
                 // check to see if theres already a user with that email
                 if (user) {
                     return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
