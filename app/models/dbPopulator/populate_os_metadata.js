@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var configDB = require('../../../config/database');
+var configDB = require('../../../database');
 var osMetadata = require('../os_metadata');
 
 mongoose.connect(configDB.url, function(err){

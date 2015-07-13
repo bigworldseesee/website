@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var configDB = require('../../../config/database');
+var configDB = require('../../../database');
 var UserGroupMetadata = require('../user_group_metadata');
 
 var conn = mongoose.connect(configDB.url, function(err){
