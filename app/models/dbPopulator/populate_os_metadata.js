@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
-var configDB = require('../../../config/database');
+var config = require('../../../config/config');
 var osMetadata = require('../os_metadata');
 
-mongoose.connect(configDB.url, function(err){
+mongoose.connect(config.database.url, function(err){
     if(err) throw err;
-    console.log('connecgted ' + configDB.url);
+    console.log('connecgted ' + config.database.url);
 
 var upload = function(){
     var url = '';
