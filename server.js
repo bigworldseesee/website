@@ -15,10 +15,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-var configDB = require('./config/database.js');
+var config = require('./config/config');
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(config.database.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -26,7 +26,8 @@ require('./config/passport')(passport); // pass passport for configuration
 app.use(morgan('dev')); // log every request to the console
 
 // put static before session as suggested by https://www.airpair.com/express/posts/expressjs-and-passportjs-sessions-deep-dive
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(config.express.staticDir));
+console.log('Static path: ' + config.express.staticDir);
 
 // deprecated app.use(bodyParser()); // get information from html forms
 app.use(bodyParser.json()); // get information from html forms
@@ -35,9 +36,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(cookieParser()); // read cookies (needed for auth)
 
 // required for passport
-app.use(session({ secret: 'ilovescotchscotchyscotchscotch',
-		  resave : false,
-                  saveUninitialized : false})); // session secret
+app.use(session(config.express.session)); // session secret
 
 
 app.use(passport.initialize());

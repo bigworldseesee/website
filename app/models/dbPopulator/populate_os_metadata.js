@@ -16,7 +16,7 @@ var upload = function(){
     os.description = '';
     os.webPath = url + '/download/client/Windows';
     os.iconLocation = 'img/windows.png';
-    os.template = './partials/WindowsManualSetup.ejs';
+    os.template = '/partials/WindowsManualSetup.ejs';
 
     os.save(function(err){
         if(err) console.log(err);
@@ -28,7 +28,7 @@ var upload = function(){
     os.description = '';
     os.webPath =  url + '/download/client/Android';
     os.iconLocation = 'img/android.png';
-    os.template = './partials/AndroidManualSetup.ejs';
+    os.template = '/partials/AndroidManualSetup.ejs';
 
     os.save(function(err){
         if(err) console.log(err);
@@ -40,7 +40,7 @@ var upload = function(){
     os.description = '';
     os.webPath = url + '/download/client/iOS';
     os.iconLocation = 'img/ios.png';
-    os.template = './partials/iOSManualSetup.ejs';
+    os.template = '/partials/iOSManualSetup.ejs';
 
     os.save(function(err){
         if(err) console.log(err);
@@ -52,7 +52,7 @@ var upload = function(){
     os.description = '';
     os.webPath = url + '/download/client/OSX';
     os.iconLocation = 'img/osx.png';
-    os.template = './partials/OSXManualSetup.ejs';
+    os.template = '/partials/OSXManualSetup.ejs';
 
     os.save(function(err){
         if(err) console.log(err);
