@@ -3,4 +3,5 @@ node_modules/
 # ignore *.swp
 *.swp
 config.js
+*.bak
 public/partials
