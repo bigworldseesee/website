@@ -2,6 +2,8 @@
 node_modules/
 # ignore *.swp
 *.swp
+config.js
+*.bak
 public/partials
 # ignore database.js
 database.js
