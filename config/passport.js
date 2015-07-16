@@ -64,7 +64,9 @@ module.exports = function(passport) {
                 if (user) {
                     return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                 } else {
-
+//TODO: The logic below is incorrect in the sense that if adding account on the VPN server is failed,
+//      The new user should not be added in db or should be marked as inactive. Similarly, the email 
+//      confirmation should not be sent if any of the previous steps fail. 
                     // if there is no user with that email
                     // create the user
                     var newUser = new User();
